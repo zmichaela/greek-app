@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Καλησπέρα! - Learn Greek in the Cyclades</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cyclades-blue: #0ea5e9;
+            --deep-blue: #1e40af;
+            --cyan: #06b6d4;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --green: #10b981;
+            --red: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--cyclades-blue), var(--deep-blue));
+            min-height: 100vh;
+            color: white;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .header {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-family: Georgia, serif;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            color: var(--gray-800);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .stats-group {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .lesson-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .lesson-btn {
+            padding: 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 0.75rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .lesson-btn:hover {
+            border-color: var(--cyclades-blue);
+            transform: translateY(-2px);
+        }
+
+        .lesson-btn.active {
+            background: linear-gradient(135deg, var(--cyclades-blue), var(--cyan));
+            color: white;
+            border-color: transparent;
+        }
+
+        .lesson-emoji {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .lesson-subtitle {
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        .learning-content {
+            text-align: center;
+        }
+
+        .greek-letter {
+            font-size: 4rem;
+            font-weight: bold;
+            color: var(--deep-blue);
+            margin-bottom: 1rem;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .phrase-display {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--deep-blue);
+            margin-bottom: 0.75rem;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .english-translation {
+            font-size: 1.25rem;
+            color: var(--gray-600);
+            margin-bottom: 0.75rem;
+        }
+
+        .pronunciation {
+            font-size: 1rem;
+            color: var(--gray-600);
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .context-tip {
+            background: #dbeafe;
+            color: var(--deep-blue);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, var(--cyclades-blue), var(--cyan));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .quiz-area {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 2px solid var(--gray-100);
+        }
+
+        .question {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--gray-800);
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--cyclades-blue);
+        }
+
+        .choices {
+            display: grid;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .choice-btn {
+            padding: 0.75rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 0.5rem;
+            background: white;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+
+        .choice-btn:hover {
+            border-color: var(--cyclades-blue);
+            background: var(--gray-50);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, var(--cyclades-blue), var(--cyan));
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .result {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .result.correct {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .result.incorrect {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .next-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--green);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .progress {
+            text-align: center;
+            margin-top: 1rem;
+            opacity: 0.8;
+        }
+
+        .reset-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 0.75rem; }
+            .header h1 { font-size: 2rem; }
+            .greek-letter { font-size: 3rem; }
+            .phrase-display { font-size: 1.5rem; }
+            .card { padding: 1rem; }
+            .stats { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Καλησπέρα! 🇬🇷</h1>
+            <p>Learn Greek in the Beautiful Cyclades</p>
+            <p style="font-size: 0.875rem; opacity: 0.8;">Master the language of the islands</p>
+        </div>
+
+        <div class="card">
+            <div class="stats">
+                <div class="stats-group">
+                    <div class="stat">
+                        <span>🏆</span>
+                        <span id="score">0</span>
+                    </div>
+                    <div class="stat">
+                        <span>⭐</span>
+                        <span id="streak">0</span>
+                    </div>
+                    <div style="background: #dbeafe; color: #1e40af; padding: 0.25rem 0.5rem; border-radius: 1rem; font-size: 0.75rem;">
+                        <span id="island">Paros</span> 🏝️
+                    </div>
+                </div>
+                <button class="reset-btn" onclick="resetGame()">🔄 Reset</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-bottom: 1rem;">🏛️ Choose Your Greek Journey</h3>
+            <div class="lesson-selector">
+                <button class="lesson-btn active" onclick="setLesson('phrases')" data-lesson="phrases">
+                    <div class="lesson-emoji">💬</div>
+                    <div class="lesson-title">Essential Phrases</div>
+                    <div class="lesson-subtitle">Γεια σας, Ευχαριστώ</div>
+                </button>
+                <button class="lesson-btn" onclick="setLesson('alphabet')" data-lesson="alphabet">
+                    <div class="lesson-emoji">🔤</div>
+                    <div class="lesson-title">Greek Alphabet</div>
+                    <div class="lesson-subtitle">All 24 letters</div>
+                </button>
+                <button class="lesson-btn" onclick="setLesson('restaurant')" data-lesson="restaurant">
+                    <div class="lesson-emoji">🍽️</div>
+                    <div class="lesson-title">Taverna Talk</div>
+                    <div class="lesson-subtitle">Order like a local</div>
+                </button>
+                <button class="lesson-btn" onclick="setLesson('travel')" data-lesson="travel">
+                    <div class="lesson-emoji">🗺️</div>
+                    <div class="lesson-title">Island Navigation</div>
+                    <div class="lesson-subtitle">Get around easily</div>
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div id="content"></div>
+        </div>
+
+        <div class="progress" id="progress"></div>
+    </div>
+
+    <script>
+        class GreekLearningApp {
+            constructor() {
+                this.state = {
+                    currentLesson: 'phrases',
+                    currentQuestion: 0,
+                    score: 0,
+                    streak: 0,
+                    showResult: false,
+                    userAnswer: '',
+                    currentIsland: 'Paros'
+                };
+
+                this.islands = ['Paros', 'Naxos', 'Mykonos', 'Santorini', 'Ios', 'Amorgos', 'Milos', 'Syros', 'Tinos', 'Andros'];
+
+                this.lessons = {
+                    alphabet: [
+                        { greek: 'Α α', english: 'Alpha', pronunciation: 'AL-fah', sound: 'a', example: 'άνθρωπος (person)' },
+                        { greek: 'Β β', english: 'Beta', pronunciation: 'VEE-tah', sound: 'v', example: 'βάρκα (boat)' },
+                        { greek: 'Γ γ', english: 'Gamma', pronunciation: 'GAH-mah', sound: 'g/y', example: 'γάλα (milk)' },
+                        { greek: 'Δ δ', english: 'Delta', pronunciation: 'THEL-tah', sound: 'th', example: 'δώρο (gift)' },
+                        { greek: 'Ε ε', english: 'Epsilon', pronunciation: 'EP-see-lon', sound: 'e', example: 'ελιά (olive)' },
+                        { greek: 'Ζ ζ', english: 'Zeta', pronunciation: 'ZEE-tah', sound: 'z', example: 'ζάχαρη (sugar)' },
+                        { greek: 'Η η', english: 'Eta', pronunciation: 'EE-tah', sound: 'ee', example: 'ήλιος (sun)' },
+                        { greek: 'Θ θ', english: 'Theta', pronunciation: 'THEE-tah', sound: 'th', example: 'θάλασσα (sea)' },
+                        { greek: 'Ι ι', english: 'Iota', pronunciation: 'ee-OH-tah', sound: 'ee', example: 'ιστορία (history)' },
+                        { greek: 'Κ κ', english: 'Kappa', pronunciation: 'KAH-pah', sound: 'k', example: 'καφές (coffee)' },
+                        { greek: 'Λ λ', english: 'Lambda', pronunciation: 'LAHM-thah', sound: 'l', example: 'λεμόνι (lemon)' },
+                        { greek: 'Μ μ', english: 'Mu', pronunciation: 'mee', sound: 'm', example: 'μήλο (apple)' },
+                        { greek: 'Ν ν', english: 'Nu', pronunciation: 'nee', sound: 'n', example: 'νερό (water)' },
+                        { greek: 'Ξ ξ', english: 'Xi', pronunciation: 'ksee', sound: 'ks', example: 'ξένος (stranger)' },
+                        { greek: 'Ο ο', english: 'Omicron', pronunciation: 'OH-mee-kron', sound: 'o', example: 'όνομα (name)' },
+                        { greek: 'Π π', english: 'Pi', pronunciation: 'pee', sound: 'p', example: 'πόλη (city)' },
+                        { greek: 'Ρ ρ', english: 'Rho', pronunciation: 'roh', sound: 'r', example: 'ρόδα (wheel)' },
+                        { greek: 'Σ σ/ς', english: 'Sigma', pronunciation: 'SEEG-mah', sound: 's', example: 'σπίτι (house)' },
+                        { greek: 'Τ τ', english: 'Tau', pronunciation: 'taf', sound: 't', example: 'τυρί (cheese)' },
+                        { greek: 'Υ υ', english: 'Upsilon', pronunciation: 'EEP-see-lon', sound: 'ee', example: 'ύπνος (sleep)' },
+                        { greek: 'Φ φ', english: 'Phi', pronunciation: 'fee', sound: 'f', example: 'φίλος (friend)' },
+                        { greek: 'Χ χ', english: 'Chi', pronunciation: 'khee', sound: 'kh', example: 'χρόνος (time)' },
+                        { greek: 'Ψ ψ', english: 'Psi', pronunciation: 'psee', sound: 'ps', example: 'ψάρι (fish)' },
+                        { greek: 'Ω ω', english: 'Omega', pronunciation: 'oh-MEH-gah', sound: 'o', example: 'ώρα (hour)' }
+                    ],
+                    phrases: [
+                        { greek: 'Γεια σας', english: 'Hello', pronunciation: 'YAH-sahs', category: 'greetings', context: 'Perfect for greeting locals in the islands', image: '👋' },
+                        { greek: 'Καλημέρα', english: 'Good morning', pronunciation: 'kah-lee-MEH-rah', category: 'greetings', context: 'Morning greeting until noon', image: '🌅' },
+                        { greek: 'Καλησπέρα', english: 'Good evening', pronunciation: 'kah-lee-SPEH-rah', category: 'greetings', context: 'Evening greeting after 5 PM', image: '🌆' },
+                        { greek: 'Ευχαριστώ', english: 'Thank you', pronunciation: 'ef-khah-rees-TOH', category: 'politeness', context: 'Essential for showing gratitude', image: '🙏' },
+                        { greek: 'Παρακαλώ', english: 'Please', pronunciation: 'pah-rah-kah-LOH', category: 'politeness', context: 'Also means "you\'re welcome"', image: '🤝' },
+                        { greek: 'Συγγνώμη', english: 'Excuse me', pronunciation: 'see-GNOH-mee', category: 'politeness', context: 'For getting attention or apologizing', image: '🙇' },
+                        { greek: 'Δεν καταλαβαίνω', english: 'I don\'t understand', pronunciation: 'then kah-tah-lah-VEH-no', category: 'help', context: 'Honest way to ask for help', image: '🤷' },
+                        { greek: 'Μιλάτε αγγλικά;', english: 'Do you speak English?', pronunciation: 'mee-LAH-teh ahng-glee-KAH', category: 'communication', context: 'Breaking the ice with locals', image: '🗣️' }
+                    ],
+                    restaurant: [
+                        { greek: 'Θέλω ένα τραπέζι', english: 'I want a table', pronunciation: 'THEH-lo EH-nah trah-PEH-zee', category: 'dining', context: 'Starting your meal in Cyclades tavernas', image: '🍽️' },
+                        { greek: 'Τι συστήνετε;', english: 'What do you recommend?', pronunciation: 'tee sees-TEE-neh-teh', category: 'dining', context: 'Get local specialties and fresh catches', image: '👨‍🍳' },
+                        { greek: 'Θέλω μουσακά', english: 'I want moussaka', pronunciation: 'THEH-lo moo-sah-KAH', category: 'ordering', context: 'Classic Greek comfort food', image: '🍆' },
+                        { greek: 'Μια μπίρα παρακαλώ', english: 'One beer please', pronunciation: 'mee-ah BEE-rah pah-rah-kah-LOH', category: 'drinks', context: 'Perfect with the sunset views', image: '🍺' },
+                        { greek: 'Ένα κρασί', english: 'One wine', pronunciation: 'EH-nah krah-SEE', category: 'drinks', context: 'Try the local Assyrtiko from Santorini', image: '🍷' },
+                        { greek: 'Τον λογαριασμό παρακαλώ', english: 'The bill please', pronunciation: 'ton lo-gah-ree-ahs-MOH pah-rah-kah-LOH', category: 'payment', context: 'End of your delicious meal', image: '🧾' },
+                        { greek: 'Ήταν πολύ νόστιμο', english: 'It was very delicious', pronunciation: 'EE-tan po-LEE NOH-stee-mo', category: 'compliments', context: 'Compliment the chef and owner', image: '😋' },
+                        { greek: 'Πόσο κάνει;', english: 'How much does it cost?', pronunciation: 'POH-so KAH-nee', category: 'shopping', context: 'Essential for markets and shops', image: '💰' }
+                    ],
+                    travel: [
+                        { greek: 'Που είναι...;', english: 'Where is...?', pronunciation: 'poo EE-neh', category: 'directions', context: 'Find beaches, ports, and attractions', image: '🗺️' },
+                        { greek: 'Το λιμάνι', english: 'The port', pronunciation: 'to lee-MAH-nee', category: 'places', context: 'Essential for ferry connections', image: '⛵' },
+                        { greek: 'Η παραλία', english: 'The beach', pronunciation: 'ee pah-rah-LEE-ah', category: 'places', context: 'Find the best swimming spots', image: '🏖️' },
+                        { greek: 'Με λένε...', english: 'My name is...', pronunciation: 'meh LEH-neh', category: 'introductions', context: 'Introducing yourself to new friends', image: '👤' },
+                        { greek: 'Είμαι από...', english: 'I am from...', pronunciation: 'EE-meh ah-POH', category: 'introductions', context: 'Tell locals about your homeland', image: '🌍' },
+                        { greek: 'Πόσο μακριά είναι;', english: 'How far is it?', pronunciation: 'POH-so mah-kree-AH EE-neh', category: 'directions', context: 'Planning your island adventures', image: '📏' },
+                        { greek: 'Καλό ταξίδι', english: 'Have a good trip', pronunciation: 'kah-LOH tahk-SEE-thee', category: 'farewells', context: 'Wishing fellow travelers well', image: '✈️' },
+                        { greek: 'Καλή νύχτα', english: 'Good night', pronunciation: 'kah-LEE NEEKH-tah', category: 'greetings', context: 'Perfect for evening farewells', image: '🌙' }
+                    ]
+                };
+
+                this.init();
+            }
+
+            init() {
+                this.render();
+                this.startIslandRotation();
+            }
+
+            startIslandRotation() {
+                setInterval(() => {
+                    this.state.currentIsland = this.islands[Math.floor(Math.random() * this.islands.length)];
+                    document.getElementById('island').textContent = this.state.currentIsland;
+                }, 6000);
+            }
+
+            getCurrentItem() {
+                const lessonData = this.lessons[this.state.currentLesson];
+                return lessonData[this.state.currentQuestion];
+            }
+
+            generateChoices() {
+                const current = this.getCurrentItem();
+                const correct = current.english;
+                const allOptions = Object.values(this.lessons).flat().map(item => item.english);
+                const incorrect = allOptions.filter(opt => opt !== correct)
+                    .sort(() => 0.5 - Math.random()).slice(0, 3);
+                return [correct, ...incorrect].sort(() => 0.5 - Math.random());
+            }
+
+            playAudio() {
+                if ('speechSynthesis' in window) {
+                    speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(this.getCurrentItem().greek);
+                    utterance.lang = 'el-GR';
+                    utterance.rate = 0.7;
+                    speechSynthesis.speak(utterance);
+                }
+            }
+
+            checkAnswer(answer) {
+                const correct = answer.toLowerCase().trim() === this.getCurrentItem().english.toLowerCase().trim();
+                
+                if (correct) {
+                    this.state.score += this.state.currentLesson === 'alphabet' ? 5 : 10;
+                    this.state.streak += 1;
+                } else {
+                    this.state.streak = 0;
+                }
+                
+                this.state.showResult = true;
+                this.state.userAnswer = answer;
+                this.render();
+            }
+
+            nextQuestion() {
+                const lessonData = this.lessons[this.state.currentLesson];
+                this.state.currentQuestion = (this.state.currentQuestion + 1) % lessonData.length;
+                this.state.showResult = false;
+                this.state.userAnswer = '';
+                this.render();
+            }
+
+            setLesson(lesson) {
+                this.state.currentLesson = lesson;
+                this.state.currentQuestion = 0;
+                this.state.showResult = false;
+                this.state.userAnswer = '';
+                
+                document.querySelectorAll('.lesson-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelector(`[data-lesson="${lesson}"]`).classList.add('active');
+                
+                this.render();
+            }
+
+            resetGame() {
+                this.state.currentQuestion = 0;
+                this.state.score = 0;
+                this.state.streak = 0;
+                this.state.showResult = false;
+                this.state.userAnswer = '';
+                this.render();
+            }
+
+            renderAlphabet() {
+                const item = this.getCurrentItem();
+                const choices = this.generateChoices();
+                
+                return `
+                    <div class="learning-content">
+                        <div class="greek-letter">${item.greek}</div>
+                        <div class="english-translation">${item.english}</div>
+                        <div class="pronunciation">/${item.pronunciation}/</div>
+                        <div class="context-tip">
+                            Sounds like: <strong>${item.sound}</strong><br>
+                            Example: ${item.example}
+                        </div>
+                        <button class="play-btn" onclick="app.playAudio()">🔊 Listen</button>
+                        
+                        <div class="quiz-area">
+                            <div class="question">What is this Greek letter called?</div>
+                            <div class="choices">
+                                ${choices.map(choice => 
+                                    `<button class="choice-btn" onclick="app.checkAnswer('${choice}')" ${this.state.showResult ? 'disabled' : ''}>${choice}</button>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderPhrase() {
+                const item = this.getCurrentItem();
+                
+                if (this.state.showResult) {
+                    const isCorrect = this.state.userAnswer.toLowerCase().trim() === item.english.toLowerCase().trim();
+                    return `
+                        <div class="learning-content">
+                            ${item.image ? `<div style="font-size: 3rem; margin-bottom: 1rem;">${item.image}</div>` : ''}
+                            <div class="phrase-display">${item.greek}</div>
+                            <div class="english-translation">${item.english}</div>
+                            <div class="pronunciation">/${item.pronunciation}/</div>
+                            <div class="context-tip">💡 ${item.context}</div>
+                            <button class="play-btn" onclick="app.playAudio()">🔊 Listen</button>
+                            
+                            <div class="quiz-area">
+                                <div class="question">What does this mean in English?</div>
+                                <input type="text" class="answer-input" value="${this.state.userAnswer}" disabled>
+                                <div class="result ${isCorrect ? 'correct' : 'incorrect'}">
+                                    ${isCorrect ? '✅ Μπράβο! Perfect!' : `❌ Correct answer: ${item.english}`}
+                                </div>
+                                <button class="next-btn" onclick="app.nextQuestion()">Continue Learning ➡️</button>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                return `
+                    <div class="learning-content">
+                        ${item.image ? `<div style="font-size: 3rem; margin-bottom: 1rem;">${item.image}</div>` : ''}
+                        <div class="phrase-display">${item.greek}</div>
+                        <div class="english-translation">${item.english}</div>
+                        <div class="pronunciation">/${item.pronunciation}/</div>
+                        <div class="context-tip">💡 ${item.context}</div>
+                        <button class="play-btn" onclick="app.playAudio()">🔊 Listen & Practice</button>
+                        
+                        <div class="quiz-area">
+                            <div class="question">What does this phrase mean in English?</div>
+                            <input type="text" class="answer-input" id="answer-input" placeholder="Type your answer here..." 
+                                   onkeypress="if(event.key==='Enter') app.checkAnswer(this.value)">
+                            <button class="submit-btn" onclick="app.checkAnswer(document.getElementById('answer-input').value)">
+                                Check Answer
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            render() {
+                // Update stats
+                document.getElementById('score').textContent = this.state.score;
+                document.getElementById('streak').textContent = this.state.streak;
+                
+                // Update content
+                const content = this.state.currentLesson === 'alphabet' ? this.renderAlphabet() : this.renderPhrase();
+                document.getElementById('content').innerHTML = content;
+                
+                // Update progress
+                const lessonData = this.lessons[this.state.currentLesson];
+                const item = this.getCurrentItem();
+                const progressText = `${this.state.currentLesson === 'alphabet' ? 'Letter' : 'Phrase'} ${this.state.currentQuestion + 1} of ${lessonData.length} • ${item.category || 'Greek'} • ${this.state.currentIsland} 🌊`;
+                document.getElementById('progress').textContent = progressText;
+            }
+        }
+
+        // Global functions for onclick handlers
+        function setLesson(lesson) { app.setLesson(lesson); }
+        function resetGame() { app.resetGame(); }
+
+        // Initialize app
+        const app = new GreekLearningApp();
+    </script>
+</body>
+</html>
